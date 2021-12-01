@@ -44,7 +44,7 @@ int main() {
 
     size_t count_b = 0;
     for (size_t i = 3; i < length; i++) {
-        count_b += values[i] > values[i - 2];
+        count_b += values[i] > values[i - 3];
     }
 
     clock_t problem_b = clock();
