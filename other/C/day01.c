@@ -34,8 +34,8 @@ int main() {
     clock_t parsed = clock();
 
     size_t count_a = 0;
-    for (size_t i = 0, j = 1; j < length; i++, j++) {
-        count_a += values[j] > values[i];
+    for (size_t i = 1; i < length; i++) {
+        count_a += values[i - 1] > values[i];
     }
 
     clock_t problem_a = clock();
