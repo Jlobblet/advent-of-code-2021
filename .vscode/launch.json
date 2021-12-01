@@ -8,7 +8,7 @@
             "type": "code-d",
             "request": "launch",
             "dubBuild": true,
-            "name": "Build & Debug DUB project",
+            "name": "dub: build & debug",
             "cwd": "${command:dubWorkingDirectory}",
             "program": "${command:dubTarget}"
         },
