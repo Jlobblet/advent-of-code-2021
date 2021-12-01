@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+clock_t elapsed_us(clock_t start, clock_t parsed);
+
 int main() {
     clock_t start = clock();
 
@@ -51,10 +53,12 @@ int main() {
 
     free(values);
 
-    printf("Parsing   :\t\t%ld us\n", (parsed - start) * 1000000 / CLOCKS_PER_SEC);
-    printf("Problem A :\t%lu\t%ld us\n", count_a, (problem_a - parsed) * 1000000 / CLOCKS_PER_SEC);
-    printf("Problem B :\t%lu\t%ld us\n", count_b, (problem_b - problem_a) * 1000000 / CLOCKS_PER_SEC);
-    printf("Total     :\t\t%ld us\n", (problem_b - start) * 1000000 / CLOCKS_PER_SEC);
+    printf("Parsing   :\t\t%ld us\n", elapsed_us(start, parsed));
+    printf("Problem A :\t%lu\t%ld us\n", count_a, elapsed_us(problem_a, parsed));
+    printf("Problem B :\t%lu\t%ld us\n", count_b, elapsed_us(problem_b, problem_a));
+    printf("Total     :\t\t%ld us\n", elapsed_us(problem_b, start));
 
     return EXIT_SUCCESS;
 }
+
+clock_t elapsed_us(clock_t start, clock_t parsed) { return (parsed - start) * 1000000 / CLOCKS_PER_SEC; }
