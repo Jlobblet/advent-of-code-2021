@@ -11,19 +11,19 @@ import std.typecons : tuple;
 import days.day : Day;
 import timer : Timer;
 
-class Day01 : Day!(ulong[], ulong, "data/01.txt")
+class Day01 : Day!(ulong[], size_t, "data/01.txt")
 {
     ulong[] parseData(string data, Timer* timer)
     {
         return data.splitLines.map!(compose!(to!ulong, strip)).array;
     }
 
-    ulong problemA(ulong[] data, Timer* timer)
+    size_t problemA(ulong[] data, Timer* timer)
     {
         return zip(data.dropBackOne, data.dropOne).count!"a[1] > a[0]";
     }
 
-    ulong problemB(ulong[] data, Timer* timer)
+    size_t problemB(ulong[] data, Timer* timer)
     {
         struct State
         {
