@@ -1,0 +1,23 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "dub",
+			"test": true,
+			"cwd": "${command:dubWorkingDirectory}",
+			"compiler": "$current",
+			"archType": "$current",
+			"buildType": "$current",
+			"configuration": "$current",
+			"problemMatcher": [
+				"$dmd"
+			],
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+			"label": "dub: Test",
+			"detail": "dub test --compiler=dmd.EXE -a=x86_64 -b=debug -c=application"
+		}
+	]
+}
