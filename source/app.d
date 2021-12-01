@@ -8,8 +8,7 @@ import days.days;
 void main()
 {
     // Add a reference to each day here
-    // scope Runner[] days = [Runner(new Day01)], Runner(new Day02), ...];
-    scope Runner[] days = [];
+    scope Runner[] days = [Runner(new Day01)];
     auto length = days.length;
     if (length == 0)
     {
