@@ -35,7 +35,7 @@ int main() {
 
     size_t count_a = 0;
     for (size_t i = 1; i < length; i++) {
-        count_a += values[i - 1] > values[i];
+        count_a += values[i] > values[i - 1];
     }
 
     clock_t problem_a = clock();
