@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
-clock_t elapsed_us(clock_t start, clock_t end);
+#include "common.h"
 
 int main() {
     clock_t start = clock();
@@ -15,7 +14,7 @@ int main() {
 
     size_t count_a = 0, count_b = 0;
 
-    FILE* fp = fopen("01.txt", "r");
+    FILE* fp = fopen("data/01.txt", "r");
     if (fp == NULL) { exit(EXIT_FAILURE); }
 
     if (fgets(buffer, buffer_size, fp) == NULL) { exit(EXIT_FAILURE); }
@@ -45,5 +44,3 @@ int main() {
 
     return EXIT_SUCCESS;
 }
-
-clock_t elapsed_us(clock_t start, clock_t end) { return (end - start) * 1000000 / CLOCKS_PER_SEC; }
