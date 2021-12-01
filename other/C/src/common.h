@@ -52,7 +52,10 @@ typedef uint_fast64_t fu64;
 #define I64_MIN INT64_MIN
 #define ISIZE_MIN INTPTR_MIN
 
+usize read_all_lines(const char* filepath, char*** lines, usize** lengths, usize n);
+
 clock_t elapsed_us(clock_t start, clock_t end);
+
 i8 strtoi8(const char* nptr, char** endptr, int base);
 u8 strtou8(const char* nptr, char** endptr, int base);
 i16 strtoi16(const char* nptr, char** endptr, int base);
