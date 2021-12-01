@@ -6,7 +6,7 @@
 		"emsi_containers": "~>0.9.0",
 		"optional": "~>1.3.0"
 	},
-	"description": "A template for Advent of Code solutions written in D.",
+	"description": "Solutions to Advent of Code 2021 written in D.",
 	"license": "MIT",
-	"name": "advent-of-code-d-template"
+	"name": "advent-of-code-2021-d"
 }
