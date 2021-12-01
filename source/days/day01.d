@@ -4,7 +4,7 @@ import std.algorithm : count, filter, fold, map, sum;
 import std.array : array;
 import std.conv : to;
 import std.functional : compose;
-import std.range : drop, dropBackOne, dropOne, zip;
+import std.range : drop, dropBackOne, dropOne, slide, zip;
 import std.stdio : writeln;
 import std.string : splitLines, strip;
 import std.typecons : tuple;
@@ -25,23 +25,7 @@ class Day01 : Day!(ulong[], size_t, "data/01.txt")
 
     size_t problemB(ulong[] data, Timer* timer)
     {
-        struct State
-        {
-            ulong[3] LastThree;
-            ulong CurrentSum;
-            ulong Count;
-        }
-
-        State initialState = State(data[0..3], data[0..3].sum, 0);
-
-        State folder(State acc, ulong elt)
-        {
-            ulong nextSum = acc.LastThree[1] + acc.LastThree[2] + elt;
-            ulong[3] nextThree = [acc.LastThree[1], acc.LastThree[2], elt];
-            bool larger = nextSum > acc.CurrentSum;
-            return State(nextThree, nextSum, acc.Count + larger);
-        }
-
-        return data.drop(3).fold!folder(initialState).Count;
+        auto windows = data.slide(3);
+        return zip(windows.save.dropBackOne, windows.save.dropOne).count!"a[1].sum > a[0].sum";
     }
 }
