@@ -9,7 +9,7 @@ import std.string : splitLines, strip;
 import days.day : Day;
 import timer : Timer;
 
-class Day01 : Day!(ulong[], size_t, "bigdata/01.txt")
+class Day01 : Day!(ulong[], size_t, "data/01.txt")
 {
     ulong[] parseData(string data, Timer* timer)
     {
