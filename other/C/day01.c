@@ -42,11 +42,9 @@ int main() {
 
     clock_t problem_a = clock();
 
-    size_t count_b = 0, last_sum = values[0] + values[1] + values[2], next_sum;
+    size_t count_b = 0;
     for (size_t i = 3; i < length; i++) {
-        next_sum = values[i - 2] + values[i - 1] + values[i];
-        count_b += next_sum > last_sum;
-        last_sum = next_sum;
+        count_b += values[i] > values[i - 2];
     }
 
     clock_t problem_b = clock();
