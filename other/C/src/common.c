@@ -65,7 +65,7 @@ usize read_all_lines(const char* filepath, char*** lines, usize** lengths, usize
 }
 
 
-clock_t elapsed_us(clock_t start, clock_t end) { return (end - start) * 1000000 / CLOCKS_PER_SEC; }
+clock_t elapsed_us(clock_t start, clock_t end) { return ((end - start) * 1000000) / CLOCKS_PER_SEC; }
 
 i8 strtoi8(const char* nptr, char** endptr, int base) {
     long parsed = strtol(nptr, endptr, base);
