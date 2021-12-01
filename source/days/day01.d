@@ -30,4 +30,13 @@ class Day01 : Day!(ulong[], size_t, "bigdata/01.txt")
     {
         return problem!3(data);
     }
+
+    unittest
+    {
+        Day01 day = new Day01;
+        ulong[] data = [199, 200, 208, 210, 200, 207, 240, 269, 260, 263];
+        // The timer isn't used for these solutions so can be ignored
+        assert(day.problemA(data, null) == 7);
+        assert(day.problemB(data, null) == 5);
+    }
 }
