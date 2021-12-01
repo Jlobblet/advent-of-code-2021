@@ -1,10 +1,11 @@
 module days.day01;
 
-import std.algorithm : fold, map, sum;
+import std.algorithm : count, filter, fold, map, sum;
 import std.array : array;
 import std.conv : to;
 import std.functional : compose;
-import std.range : drop, dropOne;
+import std.range : drop, dropBackOne, dropOne, zip;
+import std.stdio : writeln;
 import std.string : splitLines, strip;
 import std.typecons : tuple;
 import days.day : Day;
@@ -19,24 +20,7 @@ class Day01 : Day!(ulong[], ulong, "data/01.txt")
 
     ulong problemA(ulong[] data, Timer* timer)
     {
-        // Struct to store fold accumulator.
-        struct State
-        {
-            ulong Last;
-            ulong Count;
-        }
-
-        // Start with the first element as the max value.
-        State initialState = State(data[0], 0);
-
-        State folder(State acc, ulong elt)
-        {
-            bool larger = elt > acc.Last;
-            // If this element is larger than the last element update the state.
-            return State(elt, acc.Count + larger);
-        }
-
-        return data.dropOne.fold!folder(initialState).Count;
+        return zip(data.dropBackOne, data.dropOne).count!"a[1] > a[0]";
     }
 
     ulong problemB(ulong[] data, Timer* timer)
