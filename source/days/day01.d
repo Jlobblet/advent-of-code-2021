@@ -24,6 +24,6 @@ class Day01 : Day!(ulong[], size_t, "data/01.txt")
     size_t problemB(ulong[] data, Timer* timer)
     {
         auto windows = data.slide(3);
-        return zip(windows.save.dropBackOne, windows.save.dropOne).count!"a[1].sum > a[0].sum";
+        return zip(windows.dropBackOne, windows.dropOne).count!"a[1].sum > a[0].sum";
     }
 }
