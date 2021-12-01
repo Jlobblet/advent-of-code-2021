@@ -1,13 +1,11 @@
 module days.day01;
 
-import std.algorithm : count, filter, fold, map, sum;
+import std.algorithm : count, map, sum;
 import std.array : array;
 import std.conv : to;
 import std.functional : compose;
-import std.range : drop, dropBackOne, dropOne, slide, zip;
-import std.stdio : writeln;
+import std.range : dropBackOne, dropOne, slide, zip;
 import std.string : splitLines, strip;
-import std.typecons : tuple;
 import days.day : Day;
 import timer : Timer;
 
