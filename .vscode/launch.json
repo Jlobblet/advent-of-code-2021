@@ -8,7 +8,7 @@
             "type": "code-d",
             "request": "launch",
             "dubBuild": true,
-            "name": "dub: build & debug",
+            "name": "dub: test, build & debug",
             "cwd": "${command:dubWorkingDirectory}",
             "program": "${command:dubTarget}",
             "preLaunchTask": "dub: Test",
