@@ -51,10 +51,10 @@ int main() {
 
     free(values);
 
-    printf("Parsing   :\t\t%ld ns\n", (parsed - start) * 1000000000 / CLOCKS_PER_SEC);
-    printf("Problem A :\t%lu\t%ld ns\n", count_a, (problem_a - parsed) * 1000000000 / CLOCKS_PER_SEC);
-    printf("Problem B :\t%lu\t%ld ns\n", count_b, (problem_b - problem_a) * 1000000000 / CLOCKS_PER_SEC);
-    printf("Total     :\t\t%ld ns\n", (problem_b - start) * 1000000000 / CLOCKS_PER_SEC);
+    printf("Parsing   :\t\t%ld us\n", (parsed - start) * 1000000 / CLOCKS_PER_SEC);
+    printf("Problem A :\t%lu\t%ld us\n", count_a, (problem_a - parsed) * 1000000 / CLOCKS_PER_SEC);
+    printf("Problem B :\t%lu\t%ld us\n", count_b, (problem_b - problem_a) * 1000000 / CLOCKS_PER_SEC);
+    printf("Total     :\t\t%ld us\n", (problem_b - start) * 1000000 / CLOCKS_PER_SEC);
 
     return EXIT_SUCCESS;
 }
