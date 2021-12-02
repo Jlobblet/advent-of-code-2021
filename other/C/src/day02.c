@@ -1,14 +1,12 @@
 #include <complex.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/stat.h>
 #include <time.h>
 #include <assert.h>
-#include <fcntl.h>
-#include <unistd.h>
 #include <sys/mman.h>
 #include "../libraries/JC/src/jtime.h"
-#include "../libraries/JC/src/jio.h"
+#include "../libraries/JC/src/jint.h"
+#include "../libraries/JC/src/jmmap.h"
 
 complex double parseA(const char* line);
 
@@ -18,27 +16,13 @@ iptr advance_line(char* text, char** buf);
 
 int main() {
     clock_t start = clock();
-    struct stat s;
-    int fd = open("data/02.txt", O_RDONLY);
-    if (fd == -1) {
-        return EXIT_FAILURE;
-    }
-
-    if (fstat(fd, &s) == -1) {
-        close(fd);
-        return EXIT_FAILURE;
-    }
-
-    char* lines = mmap(NULL, s.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
-    if (lines == MAP_FAILED) {
-        close(fd);
-        return EXIT_FAILURE;
-    }
-    madvise(lines, s.st_size, MADV_WILLNEED);
-    madvise(lines, s.st_size, MADV_SEQUENTIAL);
+    jc_mmap f;
+    iptr size = mmap_read("data/02.txt", &f);
+    madvise(f.address, size, MADV_WILLNEED);
+    madvise(f.address, size, MADV_SEQUENTIAL);
     complex double sumA = CMPLX(0.0, 0.0), sumB = CMPLX(0.0, 0.0);
     i64 aim = 0;
-    for (char* startptr = lines, * endptr; advance_line(startptr, &endptr) != -1; startptr = endptr) {
+    for (char* startptr = f.address, * endptr; advance_line(startptr, &endptr) != -1; startptr = endptr) {
         sumA += parseA(startptr);
         assert(creal(sumA) < 2e53);
         assert(cimag(sumA) < 2e53);
@@ -51,8 +35,7 @@ int main() {
     printf("Problem B:\t%ld\t\n", (i64) creal(sumB) * (i64) cimag(sumB));
     printf("Elapsed time:\t%ld us\n", elapsed_us(start, end));
 
-    munmap(lines, s.st_size);
-    close(fd);
+    mmap_close(&f);
 
     return EXIT_SUCCESS;
 }
