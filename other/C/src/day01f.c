@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
-#include "../libraries/JC/jtime.h"
+#include "../libraries/JC/src/jtime.h"
 
 char* parse(char** ptr, unsigned long* buf) {
     char* end;
