@@ -31,6 +31,8 @@ int main() {
         exit(EXIT_FAILURE);
     }
     char* address = mmap(0, s.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+    madvise(address, s.st_size, MADV_WILLNEED);
+    madvise(address, s.st_size, MADV_SEQUENTIAL);
     if (address == MAP_FAILED) {
         close(fd);
         exit(EXIT_FAILURE);
