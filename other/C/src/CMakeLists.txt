@@ -22,3 +22,10 @@ target_compile_options(Day01f PUBLIC ${CompileOptions})
 target_link_libraries(Day01f JC)
 target_link_options(Day01f PUBLIC ${LinkOptions})
 
+configure_file(${CMAKE_SOURCE_DIR}/../../data/02.txt ${CMAKE_BINARY_DIR}/src/data/02.txt COPYONLY)
+
+add_executable(Day02 day02.c)
+target_compile_options(Day02 PUBLIC ${CompileOptions})
+target_link_libraries(Day02 JC)
+target_link_options(Day02 PUBLIC ${LinkOptions})
+
