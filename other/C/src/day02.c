@@ -23,11 +23,11 @@ int main() {
     i64 aim = 0;
     for (const char* startptr = f.address, * endptr; advance_line(startptr, &endptr) != -1; startptr = endptr) {
         sumA += parseA(startptr);
-        assert(creal(sumA) < 2e53);
-        assert(cimag(sumA) < 2e53);
+        assert(creal(sumA) < 2e53 && creal(sumA) > -2e53);
+        assert(cimag(sumA) < 2e53 && cimag(sumA) > -2e53);
         sumB += parseB(startptr, &aim);
-        assert(creal(sumB) < 2e53);
-        assert(cimag(sumB) < 2e53);
+        assert(creal(sumB) < 2e53 && creal(sumB) > -2e53);
+        assert(cimag(sumB) < 2e53 && creal(sumB) > -2e53);
     }
     clock_t end = clock();
     printf("Problem A:\t%ld\t\n", (i64) creal(sumA) * (i64) cimag(sumA));
