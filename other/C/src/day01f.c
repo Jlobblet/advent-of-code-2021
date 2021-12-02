@@ -7,12 +7,13 @@
 #include <unistd.h>
 #include "../libraries/JC/jtime.h"
 
-int parse(char** start, char** end, unsigned long* buf) {
-    *buf = strtoul(*start, end, 10);
-    if (*start == *end) {
+int parse(char** ptr, unsigned long* buf) {
+    char* end;
+    *buf = strtoul(*ptr, &end, 10);
+    if (*ptr == end) {
         return -1;
     }
-    *start = *end;
+    *ptr = end;
     return 0;
 }
 
@@ -38,23 +39,23 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    char* startptr = address;
-    char* endptr;
-    if (parse(&startptr, &endptr, &values[length++]) == -1) {
+    char* ptr = address;
+    if (parse(&ptr, &values[length]) == -1) {
         close(fd);
         exit(EXIT_FAILURE);
     }
 
-    while (parse(&startptr, &endptr, &values[length++]) != -1 && length < 3)
-    {
-        count_a += values[1] > values[0];
+    for (length = 1;
+         parse(&ptr, &values[length]) != -1 && length < 3;
+         length++) {
+        count_a += values[length - 1] > values[length - 2];
     }
-    size_t length_m = length - 1, length_mm = length - 3;
-    while (parse(&startptr, &endptr, &values[length % 4]) != -1)
-    {
-        size_t index = (length++) % 4;
-        size_t index_m = (length_m++) % 4;
-        size_t index_mm = (length_mm++) % 4;
+    for (size_t length_m = length - 1, length_mm = length - 3;
+         parse(&ptr, &values[length % 4]) != -1;
+         length++, length_m++, length_mm++) {
+        size_t index = (length) % 4;
+        size_t index_m = (length_m) % 4;
+        size_t index_mm = (length_mm) % 4;
         count_a += values[index] > values[index_m];
         count_b += values[index] > values[index_mm];
     }
