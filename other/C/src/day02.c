@@ -34,6 +34,8 @@ int main() {
         close(fd);
         return EXIT_FAILURE;
     }
+    madvise(lines, s.st_size, MADV_WILLNEED);
+    madvise(lines, s.st_size, MADV_SEQUENTIAL);
     complex double sumA = CMPLX(0.0, 0.0), sumB = CMPLX(0.0, 0.0);
     i64 aim = 0;
     for (char* startptr = lines, * endptr; advance_line(startptr, &endptr) != -1; startptr = endptr) {
