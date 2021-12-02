@@ -7,14 +7,13 @@
 #include <unistd.h>
 #include "../libraries/JC/jtime.h"
 
-int parse(char** ptr, unsigned long* buf) {
+char* parse(char** ptr, unsigned long* buf) {
     char* end;
     *buf = strtoul(*ptr, &end, 10);
     if (*ptr == end) {
-        return -1;
+        return NULL;
     }
-    *ptr = end;
-    return 0;
+    return end;
 }
 
 int main() {
@@ -40,18 +39,18 @@ int main() {
     }
 
     char* ptr = address;
-    if (parse(&ptr, &values[length]) == -1) {
+    if ((ptr = parse(&ptr, &values[length])) == NULL) {
         close(fd);
         exit(EXIT_FAILURE);
     }
 
     for (length = 1;
-         parse(&ptr, &values[length]) != -1 && length < 3;
+         (ptr = parse(&ptr, &values[length])) != NULL && length < 3;
          length++) {
         count_a += values[length - 1] > values[length - 2];
     }
     for (size_t length_m = length - 1, length_mm = length - 3;
-         parse(&ptr, &values[length % 4]) != -1;
+         (ptr = parse(&ptr, &values[length % 4])) != NULL;
          length++, length_m++, length_mm++) {
         size_t index = (length) % 4;
         size_t index_m = (length_m) % 4;
