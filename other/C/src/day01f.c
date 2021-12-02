@@ -1,15 +1,15 @@
-#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/mman.h>
-#include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
+#include "../libraries/JC/src/jint.h"
+#include "../libraries/JC/src/jmmap.h"
 #include "../libraries/JC/src/jtime.h"
 
-char* parse(char** ptr, unsigned long* buf) {
+char* parse(char** ptr, u64* buf) {
     char* end;
-    *buf = strtoul(*ptr, &end, 10);
+    *buf = strtou64(*ptr, &end, 10);
     if (*ptr == end) {
         return NULL;
     }
@@ -19,47 +19,33 @@ char* parse(char** ptr, unsigned long* buf) {
 int main() {
     clock_t start = clock();
 
-    size_t length = 0;
-    unsigned long values[4];
+    uptr count_a = 0, count_b = 0;
 
-    size_t count_a = 0, count_b = 0;
-
-    int fd = open("data/01.txt", O_RDONLY);
-    struct stat s;
-    if (fstat(fd, &s) == -1) {
-        close(fd);
-        exit(EXIT_FAILURE);
+    iptr size;
+    jc_mmap file;
+    if ((size = mmap_read("data/01.txt", &file)) == -1) {
+        return EXIT_FAILURE;
     }
-    char* address = mmap(0, s.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
-    madvise(address, s.st_size, MADV_WILLNEED);
-    madvise(address, s.st_size, MADV_SEQUENTIAL);
-    if (address == MAP_FAILED) {
-        close(fd);
-        exit(EXIT_FAILURE);
-    }
+    madvise(file.address, size, MADV_WILLNEED);
+    madvise(file.address, size, MADV_SEQUENTIAL);
 
-    char* ptr = address;
+    char* ptr = file.address;
+    uptr length = 0;
+    u64 values[4];
     if ((ptr = parse(&ptr, &values[length])) == NULL) {
-        close(fd);
+        mmap_close(&file);
         exit(EXIT_FAILURE);
     }
 
-    for (length = 1;
-         (ptr = parse(&ptr, &values[length])) != NULL && length < 3;
-         length++) {
-        count_a += values[length - 1] > values[length - 2];
+    for (length = 1; length < 3 && (ptr = parse(&ptr, &values[length])) != NULL; length++) {
+        count_a += values[length] > values[length - 1];
     }
-    for (size_t length_m = length - 1, length_mm = length - 3;
-         (ptr = parse(&ptr, &values[length % 4])) != NULL;
-         length++, length_m++, length_mm++) {
-        size_t index = (length) % 4;
-        size_t index_m = (length_m) % 4;
-        size_t index_mm = (length_mm) % 4;
-        count_a += values[index] > values[index_m];
-        count_b += values[index] > values[index_mm];
+
+    for (length = 3; (ptr = parse(&ptr, &values[length % 4])) != NULL; length++) {
+        uptr index = length % 4, index_m1 = (length - 1) % 4, index_m3 = (length - 3) % 4;
+        count_a += values[index] > values[index_m1];
+        count_b += values[index] > values[index_m3];
     }
-    close(fd);
-    munmap(address, s.st_size);
 
     clock_t done = clock();
 
