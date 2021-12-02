@@ -1,0 +1,3 @@
+[submodule "other/C/libraries/JC"]
+	path = other/C/libraries/JC
+	url = https://github.com/Jlobblet/JC
