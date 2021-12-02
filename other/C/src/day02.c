@@ -7,12 +7,11 @@
 #include "../libraries/JC/src/jtime.h"
 #include "../libraries/JC/src/jint.h"
 #include "../libraries/JC/src/jmmap.h"
+#include "../libraries/JC/src/jstring.h"
 
 complex double parseA(const char* line);
 
 complex double parseB(const char* line, i64* aim);
-
-iptr advance_line(char* text, char** buf);
 
 int main() {
     clock_t start = clock();
@@ -22,7 +21,7 @@ int main() {
     madvise(f.address, size, MADV_SEQUENTIAL);
     complex double sumA = CMPLX(0.0, 0.0), sumB = CMPLX(0.0, 0.0);
     i64 aim = 0;
-    for (char* startptr = f.address, * endptr; advance_line(startptr, &endptr) != -1; startptr = endptr) {
+    for (const char* startptr = f.address, * endptr; advance_line(startptr, &endptr) != -1; startptr = endptr) {
         sumA += parseA(startptr);
         assert(creal(sumA) < 2e53);
         assert(cimag(sumA) < 2e53);
@@ -79,15 +78,4 @@ complex double parseB(const char* line, i64* aim) {
             exit(EXIT_FAILURE);
     }
     return CMPLX(0.0, 0.0);
-}
-
-iptr advance_line(char* text, char** buf) {
-    iptr len = 0;
-    if (text[len] == '\0') { return -1; }
-    for (; text[len] != '\n'; len++) {
-        if (text[len] == '\0') { break; }
-    }
-    len++;
-    *buf = text + len;
-    return len;
 }
