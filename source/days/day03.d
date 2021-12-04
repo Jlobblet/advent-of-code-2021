@@ -1,11 +1,11 @@
 module days.day03;
 
-import std.algorithm : count, each, filter, fold, map;
+import std.algorithm : canFind, count, each, filter, fold, map;
 import std.array : array;
 import std.bitmanip : BitArray;
 import std.conv : to;
 import std.functional : pipe;
-import std.range : iota, transposed;
+import std.range : iota, takeOne, transposed;
 import std.stdio : writefln, writeln;
 import std.string : splitLines, strip;
 import containers : HashSet;
@@ -53,34 +53,59 @@ class Day03 : Day!(BitArray[], ulong, "data/03.txt")
 
     ulong problemB(BitArray[] data, Timer* timer)
     {
-        HashSet!ulong oxyRows;
-        data.length.iota.each!(i => cast(void)oxyRows.put(i));
-        HashSet!ulong co2Rows;
-        data.length.iota.each!(i => cast(void)co2Rows.put(i));
-        oxyRows[].writeln;
-        co2Rows[].writeln;
+        bool[] initialArr = new bool[data[0].length];
+        initialArr[0 .. data[0].length] = true;
+        // Filters for which rows are still valid
+        BitArray oxyRows = BitArray(initialArr.array);
+        BitArray co2Rows = BitArray(initialArr.array);
         for (size_t i = 0; i < data.length; i++)
         {
-            ulong onesSet = data[i].bitsSet.filter!(i => oxyRows.contains(i)).count;
+            // Count 0s and 1s for each filter
+            size_t oxyOnesSet = data[i].bitsSet.filter!(j => oxyRows[j]).count;
+            size_t co2OnesSet = data[i].bitsSet.filter!(j => co2Rows[j]).count;
             data[i].flip;
-            ulong zeroesSet = data[i].bitsSet.filter!(i => co2Rows.contains(i)).count;
+            size_t oxyZeroesSet = data[i].bitsSet.filter!(j => oxyRows[j]).count;
+            size_t co2ZeroesSet = data[i].bitsSet.filter!(j => co2Rows[j]).count;
             data[i].flip;
 
-            if (oxyRows.length > 1)
+            if (oxyRows.count > 1)
             {
-                ulong oxyBit = onesSet >= zeroesSet;
-                writefln("i = %s, oxyBit = %s", i, oxyBit);
-                data[i].bitsSet.filter!(b => data[i][b] == oxyBit).each!(i => cast(void)oxyRows.remove(i));
+                bool oxyBit = oxyOnesSet >= oxyZeroesSet;
+
+                // If the bit for this iteration is 1, flip
+                if (oxyBit) {
+                    data[i].flip;
+                }
+                // Now remove all of the 1s from this column from the filter
+                // Because of the flip earlier, the bit to keep is now always 0
+                // and the bit to discard is always 1
+                data[i].bitsSet.each!(i => oxyRows[i] = false);
+                // Flip back
+                if (oxyBit) {
+                    data[i].flip;
+                }
             }
-            if (co2Rows.length > 1)
+
+            if (co2Rows.count > 1)
             {
-                ulong co2Bit = zeroesSet >= onesSet;
-                data[i].bitsSet.filter!(b => data[i][b] == co2Bit).each!(i => cast(void)co2Rows.remove(i));
+                // ditto
+                bool co2Bit = !(co2OnesSet >= co2ZeroesSet);
+
+                if (co2Bit) {
+                    data[i].flip;
+                }
+
+                data[i].bitsSet.each!(i => co2Rows[i] = false);
+                if (co2Bit) {
+                    data[i].flip;
+                }
             }
         }
-        oxyRows[].writeln;
-        co2Rows[].writeln;
-        return 0;
+        size_t oxyIndex = oxyRows.bitsSet.takeOne[0];
+        size_t co2Index = co2Rows.bitsSet.takeOne[0];
+        ulong oxyNumber = data.fold!((a, e) => (a << 1) + e[oxyIndex])(0);
+        ulong co2Number = data.fold!((a, e) => (a << 1) + e[co2Index])(0);
+        return oxyNumber * co2Number;
     }
 
     unittest
