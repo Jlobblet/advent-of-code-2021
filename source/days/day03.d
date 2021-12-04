@@ -43,7 +43,7 @@ class Day03 : Day!(BitArray[], ulong, "data/03.txt")
             elt.flip;
             ulong zeroesSet = elt.count;
             elt.flip;
-            ulong mostCommon = onesSet > zeroesSet ? 1 : 0;
+            ulong mostCommon = onesSet > zeroesSet;
             return State((acc.gamma << 1) + mostCommon, (acc.epsilon << 1) + !mostCommon);
         }
 
