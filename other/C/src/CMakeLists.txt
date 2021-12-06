@@ -2,12 +2,14 @@ cmake_minimum_required(VERSION 3.16)
 project(AoC C)
 
 set(CMAKE_C_STANDARD 11)
-list(APPEND CompileOptions -Wall -Wextra -Werror)
+list(APPEND CompileOptions -Wall -Wextra)
 list(APPEND AsanOptions -fno-omit-frame-pointer -fsanitize=address)
 
 if (CMAKE_BUILD_TYPE MATCHES DEBUG)
     list(APPEND CompileOptions ${AsanOptions})
     list(APPEND LinkOptions ${AsanOptions})
+else ()
+    list(APPEND CompileOptions -Werror)
 endif ()
 
 configure_file(${CMAKE_SOURCE_DIR}/../../data/01.txt ${CMAKE_BINARY_DIR}/src/data/01.txt COPYONLY)
