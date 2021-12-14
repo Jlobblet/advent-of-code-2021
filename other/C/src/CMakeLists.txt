@@ -10,7 +10,7 @@ if (CMAKE_BUILD_TYPE MATCHES DEBUG)
     list(APPEND CompileOptions ${AsanOptions})
     list(APPEND LinkOptions ${AsanOptions})
 else ()
-#    list(APPEND CompileOptions -Werror)
+    list(APPEND CompileOptions -Werror)
 endif ()
 
 function(AOC_DAY number)
