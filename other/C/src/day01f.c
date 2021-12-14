@@ -3,9 +3,9 @@
 #include <sys/mman.h>
 #include <time.h>
 #include <unistd.h>
-#include "../libraries/JC/src/jint.h"
-#include "../libraries/JC/src/jmmap.h"
-#include "../libraries/JC/src/jtime.h"
+#include "jint.h"
+#include "jmmap.h"
+#include "jtime.h"
 
 char* parse(char** ptr, u64* buf) {
     char* end;

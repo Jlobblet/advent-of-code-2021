@@ -3,10 +3,10 @@
 #include <sys/mman.h>
 #include <time.h>
 #include <stdbool.h>
-#include "../libraries/JC/src/jtime.h"
-#include "../libraries/JC/src/jint.h"
-#include "../libraries/JC/src/jmmap.h"
-#include "../libraries/JC/src/jbits.h"
+#include "jtime.h"
+#include "jint.h"
+#include "jmmap.h"
+#include "jbits.h"
 
 enum CountPhase { Width, Endl };
 

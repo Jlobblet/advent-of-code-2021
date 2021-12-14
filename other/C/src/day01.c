@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "../libraries/JC/src/jtime.h"
+#include "jtime.h"
 
 int main() {
     clock_t start = clock();

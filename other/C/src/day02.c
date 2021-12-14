@@ -4,10 +4,10 @@
 #include <time.h>
 #include <assert.h>
 #include <sys/mman.h>
-#include "../libraries/JC/src/jtime.h"
-#include "../libraries/JC/src/jint.h"
-#include "../libraries/JC/src/jmmap.h"
-#include "../libraries/JC/src/jstring.h"
+#include "jtime.h"
+#include "jint.h"
+#include "jmmap.h"
+#include "jstring.h"
 
 complex double parseA(const char* line);
 
