@@ -122,6 +122,8 @@ int main() {
     clock_t start = clock(), end;
     jc_mmap f;
     iptr size = mmap_read("data/04.txt", &f);
+
+    /// Vector to store numbers to call
     Vector numbers;
     Vector_default(&numbers);
     madvise(f.address, size, MADV_SEQUENTIAL);
@@ -138,6 +140,7 @@ int main() {
     }
     Vector_shrink_to_fit(&numbers);
 
+    /// Vector to store each grid
     Vector bingo_grids;
     Vector_default(&bingo_grids);
     while (*ptr != EOF && *ptr != 0) {
@@ -151,36 +154,64 @@ int main() {
     Vector_shrink_to_fit(&bingo_grids);
     mmap_close(&f);
 
-    NDArray_Backer part_a = -1;
-    for (uptr i = 0; i < numbers.length; i++) {
+    /// BitArray to store grids that have been marked as won already
+    BitArray won_grids = {
+            .length = bingo_grids.length,
+    };
+    BitArray_init(&won_grids);
+
+    NDArray_Backer part_a = -1, part_b = -1;
+    uptr n_won = 0;
+    // Iterate over numbers to call
+    for (uptr i = 0; i < numbers.length && n_won < bingo_grids.length; i++) {
         NDArray_Backer n = (NDArray_Backer) (uptr) numbers.data[i];
+        // Iterate over each grid
         for (uptr g = 0; g < bingo_grids.length; g++) {
+            // Skip grids that have already won
+            if (BitArray_get(&won_grids, g)) { continue; }
             BingoGrid* grid = (BingoGrid*) bingo_grids.data[g];
+            // Mark off the called number on this grid
             BingoGrid_mark(grid, n);
             if (BingoGrid_has_won(grid)) {
-                part_a = BingoGrid_count_remainder(grid);
+                // Mark the grid as having won
+                BitArray_on(&won_grids, g);
+                // Count the number of grids that have won
+                n_won = BitArray_popcount(&won_grids);
+                NDArray_Backer* part = NULL;
+                if (n_won == 1) {
+                    // First grid for part a
+                    part = &part_a;
+                } else if (n_won == bingo_grids.length) {
+                    // Last grid for part B
+                    part = &part_b;
+                }
+                if (part != NULL) {
+                    *part = BingoGrid_count_remainder(grid);
 #ifndef NDEBUG
-                putv("Remaining numbers: ");
-                putvln(part_a);
-                putv("Final call: ");
-                putvln(n);
-                putvln("Final grid:");
-                BingoGrid_print(grid);
+                    putv("Sum: ");
+                    putvln(*part);
+                    putv("Number: ");
+                    putvln(n);
+                    putvln("Grid: ");
+                    BingoGrid_print(grid);
 #endif
-                part_a *= n;
-                goto grid_won;
+                    *part *= n;
+                }
             }
         }
     }
-    grid_won:
+
     end = clock();
 
     putv("Part A: ");
     putvln(part_a);
+    putv("Part B: ");
+    putvln(part_b);
     putv("Time taken: ");
     putv(elapsed_us(start, end));
     putvln("us");
 
+    BitArray_dest(&won_grids);
     Vector_dest(&numbers);
     for (uptr i = 0; i < bingo_grids.length; i++) {
         BingoGrid_dest(bingo_grids.data[i]);
