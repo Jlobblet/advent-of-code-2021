@@ -55,9 +55,7 @@ dkms.conf
 .idea/
 
 # CMake stuff
-cmake-build-debug/
-cmake-build-release/
-cmake-build-debug-coverage/
+cmake-build-*/
 
 # F# stuff
 /.ionide/
