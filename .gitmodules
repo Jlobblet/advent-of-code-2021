@@ -1,5 +1,4 @@
-[submodule "other/C/libraries/JC"]
-	path = other/C/libraries/JC
+[submodule "C/libraries/JC"]
+	path = C/libraries/JC
 	url = https://github.com/Jlobblet/JC
 	branch = main
-
