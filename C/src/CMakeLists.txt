@@ -18,7 +18,7 @@ function(AOC_DAY number)
 
     add_executable(Day${number} day${number}.c)
     target_compile_options(Day${number} PUBLIC ${CompileOptions})
-    target_link_libraries(Day${number} JC)
+    target_link_libraries(Day${number} JC m)
     target_link_options(Day${number} PUBLIC ${LinkOptions})
 endfunction()
 
@@ -28,6 +28,7 @@ AOC_DAY(03)
 AOC_DAY(04)
 AOC_DAY(05)
 AOC_DAY(06)
+AOC_DAY(07)
 
 add_executable(Day01f day01f.c)
 target_compile_options(Day01f PUBLIC ${CompileOptions})
