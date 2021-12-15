@@ -97,7 +97,9 @@ int main() {
     for (uptr i = 0; i < lines.length; i++) {
         Line* line = (Line*) lines.data[i];
         if (line->x1 > grid_size[0]) { grid_size[0] = line->x1; }
+        if (line->x2 > grid_size[0]) { grid_size[0] = line->x2; }
         if (line->y1 > grid_size[1]) { grid_size[1] = line->y1; }
+        if (line->y2 > grid_size[1]) { grid_size[1] = line->y2; }
     }
     // Add 1 to account for lines being inclusive, so 0 and max are both valid values
     // Hence the total size along any given dimension is max + 1
