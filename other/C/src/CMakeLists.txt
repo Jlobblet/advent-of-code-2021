@@ -26,6 +26,7 @@ AOC_DAY(01)
 AOC_DAY(02)
 AOC_DAY(03)
 AOC_DAY(04)
+AOC_DAY(05)
 
 add_executable(Day01f day01f.c)
 target_compile_options(Day01f PUBLIC ${CompileOptions})
