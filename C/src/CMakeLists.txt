@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 project(AoC C)
 
 set(CMAKE_C_STANDARD 11)
-list(APPEND CompileOptions -Wall -Wextra)
+list(APPEND CompileOptions -Wall -Wextra -mavx2 -march=native)
 list(APPEND AsanOptions -fno-omit-frame-pointer -fsanitize=address)
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../libraries/JC/src")
 
