@@ -13,8 +13,8 @@ void evolve(uptr (* fish_count)[9]) {
     // Numbers 1-8 are moved to the left one step.
     memcpy(new_fish_count, &(*fish_count)[1], 8 * sizeof(uptr));
     // The zeroes are handled specially, being added to 6 as well as to 8.
-    new_fish_count[8] = *fish_count[0];
-    new_fish_count[6] += *fish_count[0];
+    new_fish_count[8] = (*fish_count)[0];
+    new_fish_count[6] += (*fish_count)[0];
     // Copy the results back into the buffer
     memcpy(fish_count, new_fish_count, 9 * sizeof(uptr));
 }
