@@ -14,7 +14,7 @@ else ()
 endif ()
 
 function(AOC_DAY number)
-    configure_file(${CMAKE_SOURCE_DIR}/../../data/${number}.txt ${CMAKE_BINARY_DIR}/src/data/${number}.txt COPYONLY)
+    configure_file(${CMAKE_SOURCE_DIR}/../data/${number}.txt ${CMAKE_BINARY_DIR}/src/data/${number}.txt COPYONLY)
 
     add_executable(Day${number} day${number}.c)
     target_compile_options(Day${number} PUBLIC ${CompileOptions})
